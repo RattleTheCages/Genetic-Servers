@@ -15,6 +15,7 @@
 
 
 #include "succession_o"
+#include "parse_o"
 #include "CloudShepardPacket_o.h"
 
 
@@ -66,6 +67,14 @@ void CloudShepardPacket_o::Serialize(string_o& sout)  {
 }
 
 void CloudShepardPacket_o::Deserialize(string_o& sin)  {
+    parse_o parse(sin.string());
+
+    parse.it("name", name);
+    parse.it("sequence", sequence);
+    parse.it("geneticServerScore", geneticServerScore);
+    parse.it("geneticServerState", geneticServerState);
+    parse.it("geneticServerIP", geneticServerIP);
+/*
     sin.upcut("CloudShepardPacket_o:");
     sin.upcut("name=");
     name = sin;
@@ -82,9 +91,9 @@ void CloudShepardPacket_o::Deserialize(string_o& sin)  {
     sin.upcut("dataLength=");
     dataLength = sin.stoi();
     sin.upcut("rawData=");
-
     succession_o::memcpy(rawData, sin.string(), dataLength);
     succession_o::bzero(rawData+dataLength, 2048-dataLength);
+*/
 }
 
 

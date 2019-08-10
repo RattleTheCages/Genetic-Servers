@@ -20,13 +20,15 @@
 #include "input_o"
 #include "output_o"
 #include "queue_o"
-#include "../Code-from-the-90s/projects/library/lib/memory/sortList_o.h"
+#include "sortList_o"
+#include "colony_o"
 #include "CloudShepardPacket_o.h"
 
 class CloudShepard_o : public pserver_o /*, public carapace_o*/  {
 //  friend class carapace_o;
   protected:
     int         State;
+    colony_o    flock;
     queue_o<CloudShepardPacket_o>  queueOfGeneticCloudServers;
     sortList_o<CloudShepardPacket_o>  sortedListOfGeneticCloudServers;
 
@@ -41,6 +43,9 @@ class CloudShepard_o : public pserver_o /*, public carapace_o*/  {
 
     int     start();
     int     process(input_o&, output_o&);
+
+    int     spawnGeneticCloudServer();
+    int     loadDNAColony();
 };
 
 

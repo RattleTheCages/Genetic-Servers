@@ -17,14 +17,16 @@
 
 #include "pserver_o"
 #include "entity_o"      // Server DNA!
+#include "GeneticCloudServerDNA_o.h"
 
-class GeneticCloudServer_o : public pserver_o , public entity_o  {
+class GeneticCloudServer_o : public GeneticCloudServerDNA_o, public pserver_o  {
   protected:
     int         State;
     //string_o    Name;
 
   public:
     GeneticCloudServer_o();
+    GeneticCloudServer_o(const GeneticCloudServerDNA_o&);
     GeneticCloudServer_o(const GeneticCloudServer_o&);
     virtual ~GeneticCloudServer_o();
     GeneticCloudServer_o& operator = (const GeneticCloudServer_o&);
@@ -34,6 +36,8 @@ class GeneticCloudServer_o : public pserver_o , public entity_o  {
     int     start();
 
     const char* name() const;
+
+int loadDNAColony();
 };
 
 

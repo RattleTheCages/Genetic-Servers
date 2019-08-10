@@ -63,7 +63,7 @@ int traits_o::trait1(const entity_o& e)  {
         }
     }
 
-    r = m[1];
+    for(y = 0; y < 22; y++)  r += m[y];
 
     delete m;
 
@@ -73,6 +73,22 @@ int traits_o::trait1(const entity_o& e)  {
 
 int traits_o::trait2(const entity_o& e)  {
     return  2;
+    int x, y;
+    int r = 0;
+    int* m = new int[e.Chromosomes[0]->numberOfGenes()];
+
+
+    for(x = 0; x < e.numberOfChromosomes(); x++)  {
+        for(y = 23; y < 44; y++)  {
+            m[y] = m[y] % (*e.Chromosomes[x])[y];
+        }
+    }
+
+    for(y = 0; y < 22; y++)  r += m[y];
+
+    delete m;
+
+    return  r;
 }
 
 

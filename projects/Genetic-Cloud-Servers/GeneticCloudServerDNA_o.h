@@ -25,6 +25,7 @@ class GeneticCloudServerDNA_o : public entity_o, public traits_o  {
 
   public:
     GeneticCloudServerDNA_o();
+    GeneticCloudServerDNA_o(const entity_o&);
     GeneticCloudServerDNA_o(const GeneticCloudServerDNA_o&);
     virtual ~GeneticCloudServerDNA_o();
     GeneticCloudServerDNA_o& operator = (const GeneticCloudServerDNA_o&);
@@ -36,6 +37,7 @@ class GeneticCloudServerDNA_o : public entity_o, public traits_o  {
     int     numberOfGateThreads();    // are traits revealed in the
     int     numberOfCPUs();           // Genetic Cloud Server DNA.
     int     diskSpaceSize();
+    int     bandwidthSize();
     int     operatingSystemID();      // E.g.:
                                       // (1) Amazon Linux 2 AMI (HVM)
                                       // (2) Red Hat Enterprise Linux 8 (HVM)
@@ -76,6 +78,10 @@ inline int GeneticCloudServerDNA_o::operatingSystemID()  {
 
 inline int GeneticCloudServerDNA_o::operatingSystemConfig()  {
     return  traits_o::trait(6, *this);
+}
+
+inline int GeneticCloudServerDNA_o::bandwidthSize()  {
+    return  traits_o::trait(7, *this);
 }
 
 

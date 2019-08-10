@@ -12,9 +12,16 @@
 
 *******************************************************************************/
 
+#include <iostream>
+#include <fstream>
+
+#include "rand_o"
+#include "entity_o"
+#include "colony_o"
 #include "CloudShepard_o.h"
 
 log_o       log;
+rand_o      rndm;
 sysinfo_o   sysinfo;
 carapace_o  carapace;
     CloudShepard_o cloudShepard;
@@ -24,14 +31,51 @@ CloudShepard_o::CloudShepard_o() : State(2) {}
 
 CloudShepard_o::~CloudShepard_o()  {}
 
+
+int CloudShepard_o::loadDNAColony()  {
+    int x;
+    string_o colonyString;
+    string_o message;
+    char buffer[4096];
+
+    std::ifstream in;
+
+    in.open("dna.olp");
+    if(!in)  {
+        (message = "") << "File not found: " << "dna.olp";
+        ::log.error(message);
+        return -1;
+    }
+
+    while(!in.eof())  {
+        for(x=0;x<4096;x++)  {
+            in.get(buffer[x]);
+            if(in.eof())  break;
+        }
+        colonyString.fill(x, buffer);
+    }
+    in.close();
+
+    flock << colonyString.string();
+}
+
+
 int CloudShepard_o::start()  {
     int     r = 0;
     string_o ls;
     CloudShepardPacket_o* cspp;
+    CloudShepardPacket_o* geneticServer;
 
 
     r = serveport(8228);
     if(r)  return  r;
+
+
+loadDNAColony();
+
+        spawnGeneticCloudServer();
+
+
 
 
 
@@ -42,15 +86,18 @@ int CloudShepard_o::start()  {
         cspp->Serialize(ls);
 log << ls;
 
-        sortedListOfGeneticCloudServers.put(cspp->GeneticServerScore(), cspp);
+        geneticServer = new CloudShepardPacket_o(*cspp);
+        sortedListOfGeneticCloudServers.put(geneticServer->GeneticServerScore(), geneticServer);
 
-        cspp = sortedListOfGeneticCloudServers.first();
-        while(cspp)  {
+        geneticServer = sortedListOfGeneticCloudServers.first();
+        while(geneticServer)  {
             (ls = "") << "In sorted list: ";
-            cspp->Serialize(ls);
+            geneticServer->Serialize(ls);
             log << ls;
-            cspp = sortedListOfGeneticCloudServers.next();
+            geneticServer = sortedListOfGeneticCloudServers.next();
         }
+
+
 
 
     }  
@@ -96,5 +143,22 @@ int carapace_o::process(input_o& input, output_o& output)  {
 int main(int argc, char* argv[])  {
     return  cloudShepard.start();
 }
+
+int CloudShepard_o::spawnGeneticCloudServer()  {
+
+    entity_o e(*flock.Entities[0]);
+
+string_o ls;
+string_o systemString;
+
+    systemString << "./GeneticCloudServer_o " << e.uniqueid() << " >> gcs.log &";
+
+log << systemString;
+
+system(systemString.string());
+
+    return  2;
+}
+
 
 /******************************************************************************/
