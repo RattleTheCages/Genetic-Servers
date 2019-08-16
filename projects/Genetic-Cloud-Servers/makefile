@@ -25,17 +25,19 @@ PLIB_DIR    = ../../../Code-from-the-90s/projects/library/lib/
 PLIB_INCLUDE= ../../../Code-from-the-90s/projects/library/include
 GENETIC_DIR = ../../../Code-from-the-90s/projects/library/genetic/
 
-OBJFLAGS    = -g -I$(PLIB_INCLUDE)
 
-#LINKFLAGS   = -pthread -L$(PLIB_DIR) -L$(GENETIC_DIR) -L$(PSERVER_DIR) -Wl,--start-group -lpserver_o -lplib_o -lgenetic_o -lplib_o -Wl,--end-group
+OBJFLAGS    = -g -I$(PLIB_INCLUDE) -I./containers
+
 LINKFLAGS   = -pthread -L$(PLIB_DIR) -L$(GENETIC_DIR) -L$(PSERVER_DIR)
 
 
 
-EXECS       = GeneticCloudServer_o CloudShepard_o
+EXECS       = GeneticCloudServer_o gcsCloudShepard_o
 
-GCSS_HEADERS= GeneticCloudServer_o.h GeneticCloudServerDNA_o.h CloudShepardPacket_o.h CloudShepard_o.h
-GCSS_OBJS   = GeneticCloudServerDNA_o.o CloudShepardPacket_o.o
+GCSS_HEADERS= GeneticCloudServer_o.h gcsDNA_o.h gcsShepardPacket_o.h gcsCloudShepard_o.h \
+              gcsLoad.h
+
+GCSS_OBJS   = gcsDNA_o.o gcsShepardPacket_o.o gcsLoad.o
 
 
 ################################################################################
@@ -55,17 +57,20 @@ all:
 ##                                                                            ##
 ################################################################################
 
-GeneticCloudServer_o.o: GeneticCloudServer_o.h GeneticCloudServer_o.cc
-	$(CC) $(OBJFLAGS) -c GeneticCloudServer_o.cc
+GeneticCloudServer_o.o: ./servers/GeneticCloudServer_o.h ./servers/GeneticCloudServer_o.cc
+	$(CC) $(OBJFLAGS) -c ./servers/GeneticCloudServer_o.cc
 
-GeneticCloudServerDNA_o.o: GeneticCloudServerDNA_o.h GeneticCloudServerDNA_o.cc
-	$(CC) $(OBJFLAGS) -c GeneticCloudServerDNA_o.cc
+gcsDNA_o.o: ./containers/gcsDNA_o.h ./containers/gcsDNA_o.cc
+	$(CC) $(OBJFLAGS) -c ./containers/gcsDNA_o.cc
 
-CloudShepardPacket_o.o: CloudShepardPacket_o.h CloudShepardPacket_o.cc
-	$(CC) $(OBJFLAGS) -c CloudShepardPacket_o.cc
+gcsLoad.o: ./containers/gcsLoad.h ./containers/gcsLoad.cc
+	$(CC) $(OBJFLAGS) -c ./containers/gcsLoad.cc
 
-CloudShepard_o.o: CloudShepard_o.h CloudShepard_o.cc
-	$(CC) $(OBJFLAGS) -c CloudShepard_o.cc
+gcsShepardPacket_o.o: ./containers/gcsShepardPacket_o.h ./containers/gcsShepardPacket_o.cc
+	$(CC) $(OBJFLAGS) -c ./containers/gcsShepardPacket_o.cc
+
+gcsCloudShepard_o.o: ./executives/gcsCloudShepard_o.h ./executives/gcsCloudShepard_o.cc
+	$(CC) $(OBJFLAGS) -c ./executives/gcsCloudShepard_o.cc
 
 GeneticCloudServer_o: GeneticCloudServer_o.o $(GCSS_OBJS)
 	$(CC) $(LINKFLAGS) -o GeneticCloudServer_o                             \
@@ -77,12 +82,12 @@ GeneticCloudServer_o: GeneticCloudServer_o.o $(GCSS_OBJS)
         GeneticCloudServer_o.o                                                 \
         -Wl,--end-group \
 
-CloudShepard_o: CloudShepard_o.o $(GCSS_OBJS)
-	$(CC) $(LINKFLAGS) -o CloudShepard_o               \
+gcsCloudShepard_o: gcsCloudShepard_o.o $(GCSS_OBJS)
+	$(CC) $(LINKFLAGS) -o gcsCloudShepard_o               \
         $(GCSS_OBJS)                                                           \
-         CloudShepard_o.o                                                 \
-        -lpserver_o    \
+        gcsCloudShepard_o.o                                                 \
         -lgenetic_o    \
+        -lpserver_o    \
         -lplib_o                  \
 
 

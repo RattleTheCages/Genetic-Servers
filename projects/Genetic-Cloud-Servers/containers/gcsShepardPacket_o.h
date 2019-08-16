@@ -1,8 +1,6 @@
-/**  CloudShepardPacket_o.h  ****************************************************
+/**  gcsShepardPacket_o.h  *****************************************************
 
-            Spread-Spectrum-IP
-
-            A satirical internet protocol attempting to stymie packet sniffers.
+            Genetic-Cloud-Servers
 
 
             Packet Object
@@ -13,14 +11,14 @@
 
 *******************************************************************************/
 
-#ifndef CloudShepardPacket_API
-#define CloudShepardPacket_API
+#ifndef GCSShepardPacket_API
+#define GCSShepardPacket_API
 
 
 #include "string_o"
 
 
-class CloudShepardPacket_o  {
+class gcsShepardPacket_o  {
   protected:
     string_o            name;
     int                 sequence;
@@ -31,10 +29,10 @@ class CloudShepardPacket_o  {
     char                rawData[2048];
 
   public:
-    CloudShepardPacket_o();
-    CloudShepardPacket_o(const CloudShepardPacket_o&);
-    virtual         ~CloudShepardPacket_o();
-    CloudShepardPacket_o&   operator = (const CloudShepardPacket_o&);
+    gcsShepardPacket_o();
+    gcsShepardPacket_o(const gcsShepardPacket_o&);
+    virtual ~gcsShepardPacket_o();
+    gcsShepardPacket_o&   operator = (const gcsShepardPacket_o&);
 
     const char*      RawData() const;
     const char*      Name() const;
@@ -55,66 +53,66 @@ class CloudShepardPacket_o  {
     void             Serialize(string_o&);
     void             Deserialize(string_o&);
 
-    int              operator < (CloudShepardPacket_o&);
+    int              operator < (gcsShepardPacket_o&);
 
 };
 
 
 /******************************************************************************/
 
-inline const char* CloudShepardPacket_o::RawData() const  {
+inline const char* gcsShepardPacket_o::RawData() const  {
     return  rawData;
 }
 
-inline const char* CloudShepardPacket_o::Name() const  {
+inline const char* gcsShepardPacket_o::Name() const  {
     return  geneticServerIP.string();
 }
 
-inline const char* CloudShepardPacket_o::GeneticServerIP() const  {
+inline const char* gcsShepardPacket_o::GeneticServerIP() const  {
     return  name.string();
 }
 
-inline int CloudShepardPacket_o::Sequence() const  {
+inline int gcsShepardPacket_o::Sequence() const  {
     return  sequence;
 }
 
-inline int CloudShepardPacket_o::GeneticServerScore() const  {
+inline int gcsShepardPacket_o::GeneticServerScore() const  {
     return  geneticServerScore;
 }
 
-inline int CloudShepardPacket_o::GeneticServerState() const  {
+inline int gcsShepardPacket_o::GeneticServerState() const  {
     return  geneticServerState;
 }
 
-inline int CloudShepardPacket_o::DataLength() const  {
+inline int gcsShepardPacket_o::DataLength() const  {
     return  dataLength;
 }
 
-inline void CloudShepardPacket_o::setGeneticServerScore(const int gss)  {
+inline void gcsShepardPacket_o::setGeneticServerScore(const int gss)  {
     geneticServerScore = gss;
 }
 
-inline void CloudShepardPacket_o::setGeneticServerState(const int gss)  {
+inline void gcsShepardPacket_o::setGeneticServerState(const int gss)  {
     geneticServerState = gss;
 }
 
-inline void CloudShepardPacket_o::setGeneticServerIP(const string_o gsip)  {
+inline void gcsShepardPacket_o::setGeneticServerIP(const string_o gsip)  {
     geneticServerIP = gsip;
 }
 
-inline void CloudShepardPacket_o::setSequence(const int seq)  {
+inline void gcsShepardPacket_o::setSequence(const int seq)  {
     sequence = seq;
 }
 
-inline void CloudShepardPacket_o::setDataLength(const int dl)  {
+inline void gcsShepardPacket_o::setDataLength(const int dl)  {
     dataLength = dl;
 }
 
-inline void CloudShepardPacket_o::setName(const string_o n)  {
+inline void gcsShepardPacket_o::setName(const string_o n)  {
     name = n;
 }
 
-inline int CloudShepardPacket_o::operator<(CloudShepardPacket_o& s)  {
+inline int gcsShepardPacket_o::operator<(gcsShepardPacket_o& s)  {
     return  this->sequence < s.sequence;
 }
 

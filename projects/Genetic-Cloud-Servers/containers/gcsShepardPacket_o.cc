@@ -1,4 +1,4 @@
-/**  CloudShepardPacket_o.cc  ****************************************************
+/**  gcsShepardPacket_o.cc  ****************************************************
 
             Genetic-Cloud-Servers
 
@@ -16,11 +16,11 @@
 
 #include "succession_o"
 #include "parse_o"
-#include "CloudShepardPacket_o.h"
+#include "gcsShepardPacket_o.h"
 
 
-CloudShepardPacket_o::CloudShepardPacket_o()  {
-    name = "CloudShepardPacket_o";
+gcsShepardPacket_o::gcsShepardPacket_o()  {
+    name = "gcsShepardPacket_o";
     sequence = 0;
     dataLength = 0;
 /*
@@ -34,7 +34,7 @@ CloudShepardPacket_o::CloudShepardPacket_o()  {
     succession_o::bzero(rawData, 2048);
 }
 
-CloudShepardPacket_o::CloudShepardPacket_o(const CloudShepardPacket_o& sp)  {
+gcsShepardPacket_o::gcsShepardPacket_o(const gcsShepardPacket_o& sp)  {
     name = sp.name;
     sequence = sp.sequence;
     geneticServerIP = sp.geneticServerIP;
@@ -44,17 +44,17 @@ CloudShepardPacket_o::CloudShepardPacket_o(const CloudShepardPacket_o& sp)  {
     succession_o::memcpy(rawData, sp.rawData, 2048);
 }
 
-CloudShepardPacket_o::~CloudShepardPacket_o()  {}
+gcsShepardPacket_o::~gcsShepardPacket_o()  {}
 
-void CloudShepardPacket_o::setRawData(const char* raw, const int dl)  {
+void gcsShepardPacket_o::setRawData(const char* raw, const int dl)  {
     dataLength = dl;
     succession_o::memcpy(rawData, raw, dataLength);
     succession_o::bzero(rawData+dataLength, 2048-dataLength);
 }
 
-void CloudShepardPacket_o::Serialize(string_o& sout)  {
+void gcsShepardPacket_o::Serialize(string_o& sout)  {
 
-    sout << "CloudShepardPacket_o:\n";
+    sout << "gcsShepardPacket_o:\n";
     sout << "name=" << name.string() << '\n';
     sout << "sequence=" << sequence << '\n';
     sout << "geneticServerIP=" << geneticServerIP << '\n';
@@ -66,7 +66,7 @@ void CloudShepardPacket_o::Serialize(string_o& sout)  {
 
 }
 
-void CloudShepardPacket_o::Deserialize(string_o& sin)  {
+void gcsShepardPacket_o::Deserialize(string_o& sin)  {
     parse_o parse(sin.string());
 
     parse.it("name", name);
@@ -75,7 +75,7 @@ void CloudShepardPacket_o::Deserialize(string_o& sin)  {
     parse.it("geneticServerState", geneticServerState);
     parse.it("geneticServerIP", geneticServerIP);
 /*
-    sin.upcut("CloudShepardPacket_o:");
+    sin.upcut("gcsShepardPacket_o:");
     sin.upcut("name=");
     name = sin;
     name.cut('\n');

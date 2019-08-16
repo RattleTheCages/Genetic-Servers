@@ -1,4 +1,4 @@
-/**  CloudShepard_o.cc  ********************************************************
+/**  gcsCloudShepard_o.cc  ********************************************************
 
             Cloud-Shepard
 
@@ -18,21 +18,21 @@
 #include "rand_o"
 #include "entity_o"
 #include "colony_o"
-#include "CloudShepard_o.h"
+#include "gcsCloudShepard_o.h"
 
 log_o       log;
 rand_o      rndm;
 sysinfo_o   sysinfo;
 carapace_o  carapace;
-    CloudShepard_o cloudShepard;
+    gcsCloudShepard_o cloudShepard;
 
 
-CloudShepard_o::CloudShepard_o() : State(2) {}
+gcsCloudShepard_o::gcsCloudShepard_o() : State(2) {}
 
-CloudShepard_o::~CloudShepard_o()  {}
+gcsCloudShepard_o::~gcsCloudShepard_o()  {}
 
 
-int CloudShepard_o::loadDNAColony()  {
+int gcsCloudShepard_o::loadDNAColony()  {
     int x;
     string_o colonyString;
     string_o message;
@@ -60,11 +60,11 @@ int CloudShepard_o::loadDNAColony()  {
 }
 
 
-int CloudShepard_o::start()  {
+int gcsCloudShepard_o::start()  {
     int     r = 0;
     string_o ls;
-    CloudShepardPacket_o* cspp;
-    CloudShepardPacket_o* geneticServer;
+    gcsShepardPacket_o* cspp;
+    gcsShepardPacket_o* geneticServer;
 
 
     r = serveport(8228);
@@ -86,7 +86,7 @@ loadDNAColony();
         cspp->Serialize(ls);
 log << ls;
 
-        geneticServer = new CloudShepardPacket_o(*cspp);
+        geneticServer = new gcsShepardPacket_o(*cspp);
         sortedListOfGeneticCloudServers.put(geneticServer->GeneticServerScore(), geneticServer);
 
         geneticServer = sortedListOfGeneticCloudServers.first();
@@ -108,15 +108,15 @@ log << ls;
     return  2;
 }
 
-int CloudShepard_o::process(input_o& input, output_o& output)  {
+int gcsCloudShepard_o::process(input_o& input, output_o& output)  {
 
 
     string_o      out;
     string_o      ls;
-    CloudShepardPacket_o* cspp;
+    gcsShepardPacket_o* cspp;
 
 
-    cspp = new CloudShepardPacket_o();
+    cspp = new gcsShepardPacket_o();
     (ls = "") << input.message();
     log << ls;
     cspp->Deserialize(input.message());
@@ -124,12 +124,12 @@ int CloudShepard_o::process(input_o& input, output_o& output)  {
 
     queueOfGeneticCloudServers.put(cspp);
 
-    cspp->setName("CloudShepard_o");
+    cspp->setName("gcsCloudShepard_o");
     cspp->Serialize(out);
 
     output.setMessage(out.string());
 
-    (ls = "") << "CloudShepard_o::carapace_o::process( socket(" << input.socket() << "), sequence(";
+    (ls = "") << "gcsCloudShepard_o::carapace_o::process( socket(" << input.socket() << "), sequence(";
     ls << cspp->Sequence() << ") ) finished.";
     log << ls;
 
@@ -144,9 +144,9 @@ int main(int argc, char* argv[])  {
     return  cloudShepard.start();
 }
 
-int CloudShepard_o::spawnGeneticCloudServer()  {
+int gcsCloudShepard_o::spawnGeneticCloudServer()  {
 
-    entity_o e(*flock.Entities[0]);
+    entity_o e(*flock.entities()[0]);
 
 string_o ls;
 string_o systemString;

@@ -14,24 +14,24 @@
 
 #include "client_o"
 #include "rand_o"
-#include "name_o"
+//#include "name_o"
 #include "colony_o"
 #include "GeneticCloudServer_o.h"
-#include "CloudShepardPacket_o.h"
+#include "gcsShepardPacket_o.h"
 
 
 log_o       log;
 rand_o      rndm;
-name_o      name;
+//name_o      name;
 sysinfo_o   sysinfo;
 carapace_o  carapace;
 
 
 GeneticCloudServer_o::GeneticCloudServer_o() : State(2)  {
-    entity_o::setName(::name.name());
+//    entity_o::setName(::name.name());
 }
 
-GeneticCloudServer_o::GeneticCloudServer_o(const GeneticCloudServerDNA_o& dna) : State(2), GeneticCloudServerDNA_o(dna)  {}
+GeneticCloudServer_o::GeneticCloudServer_o(const gcsDNA_o& dna) : State(2), gcsDNA_o(dna)  {}
 
 GeneticCloudServer_o::~GeneticCloudServer_o()  {}
 
@@ -41,7 +41,7 @@ int GeneticCloudServer_o::start()  {
     string_o name;
     string_o ss; 
     string_o rs; 
-    CloudShepardPacket_o csp;
+    gcsShepardPacket_o csp;
 
     string_o ls;
 
@@ -162,7 +162,7 @@ return  -2;
 //*entity >> ls;
 //log << ls;
 
-GeneticCloudServerDNA_o gcsDNA(*entity);
+gcsDNA_o gcsDNA(*entity);
 GeneticCloudServer_o gcs(gcsDNA);
 
 (ls="") << "enitity: ";
