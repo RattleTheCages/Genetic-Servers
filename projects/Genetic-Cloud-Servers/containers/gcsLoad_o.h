@@ -1,13 +1,13 @@
 /**  gcsLoad_o.h  *************************************************************
+                                   Copyright 2019  Rattle  All rights reserved.
 
-            Genetic-Cloud-Servers
-
-
-            Packet Object
+            Genetic Cloud Servers
 
 
 
-                           Copyright 2019  Daniel Huffman  All rights reserved.
+            Load Packet Object
+
+
 
 *******************************************************************************/
 

@@ -1,31 +1,38 @@
-/**  gcsCloudShepard_o.cc  ********************************************************
+/**  gcsCloudShepard.cc  ******************************************************
+                                   Copyright 2019  Rattle  All rights reserved.
 
-            Cloud-Shepard
-
-
-            Server
+            Genetic Cloud Servers
 
 
 
+            Cloud Shepard Implementation
 
-                           Copyright 2019  Daniel Huffman  All rights reserved.
+
+
+
+            The executive controlling the fates of the Genetic Cloud Servers.
+
+
 
 *******************************************************************************/
 
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 
 #include "rand_o"
 #include "entity_o"
 #include "colony_o"
-#include "gcsCloudShepard_o.h"
+#include "gcsCloudShepard.h"
 
 log_o       log;
 rand_o      rndm;
 sysinfo_o   sysinfo;
 carapace_o  carapace;
-    gcsCloudShepard_o cloudShepard;
+gcsCloudShepard_o cloudShepard;
 
+
+void* gcsCloudShepard_oThreadLoop(void*);
 
 gcsCloudShepard_o::gcsCloudShepard_o() : State(2) {}
 
@@ -33,45 +40,26 @@ gcsCloudShepard_o::~gcsCloudShepard_o()  {}
 
 
 int gcsCloudShepard_o::loadDNAColony()  {
-    int x;
-    string_o colonyString;
-    string_o message;
-    char buffer[4096];
-
-    std::ifstream in;
-
-    in.open("dna.olp");
-    if(!in)  {
-        (message = "") << "File not found: " << "dna.olp";
-        ::log.error(message);
-        return -1;
-    }
-
-    while(!in.eof())  {
-        for(x=0;x<4096;x++)  {
-            in.get(buffer[x]);
-            if(in.eof())  break;
-        }
-        colonyString.fill(x, buffer);
-    }
-    in.close();
-
-    flock << colonyString.string();
+    flock.load("dna.olp");
 }
 
 
 int gcsCloudShepard_o::start()  {
     int     r = 0;
     string_o ls;
-    gcsShepardPacket_o* cspp;
-    gcsShepardPacket_o* geneticServer;
+    gcsStatusPacket_o* cspp;
+    gcsStatusPacket_o* geneticServer;
+
+
+    loadDNAColony();
+
+    loadThread.start(gcsCloudShepard_oThreadLoop, this);
 
 
     r = serveport(8228);
     if(r)  return  r;
 
 
-loadDNAColony();
 
         spawnGeneticCloudServer();
 
@@ -82,12 +70,8 @@ loadDNAColony();
     while(2)  {
         cspp = queueOfGeneticCloudServers.get();
 
-(ls = "") << "In loop: ";
-        cspp->Serialize(ls);
-log << ls;
-
-        geneticServer = new gcsShepardPacket_o(*cspp);
-        sortedListOfGeneticCloudServers.put(geneticServer->GeneticServerScore(), geneticServer);
+        geneticServer = new gcsStatusPacket_o(*cspp);
+        sortedListOfGeneticCloudServers.put(geneticServer->load(), geneticServer);
 
         geneticServer = sortedListOfGeneticCloudServers.first();
         while(geneticServer)  {
@@ -108,15 +92,43 @@ log << ls;
     return  2;
 }
 
+void gcsCloudShepard_o::loadThreadLoop()  {
+    int      n = 0;
+    string_o ls;
+    gcsStatusPacket_o* gcs;
+
+    while(2)  {
+
+        (ls="\n") << "Checking load.";
+        log << ls;
+
+        n = 1;
+        gcs = sortedListOfGeneticCloudServers.first();
+        (ls = "") << "In sorted list: ";
+        log << ls;
+        while(gcs)  {
+            (ls="") << n++;
+            gcs->Serialize(ls);
+            log << ls;
+
+            gcs = sortedListOfGeneticCloudServers.next();
+        }
+
+
+        loadThread.usleep(2000000);
+
+    }
+}
+
 int gcsCloudShepard_o::process(input_o& input, output_o& output)  {
 
 
     string_o      out;
     string_o      ls;
-    gcsShepardPacket_o* cspp;
+    gcsStatusPacket_o* cspp;
 
 
-    cspp = new gcsShepardPacket_o();
+    cspp = new gcsStatusPacket_o();
     (ls = "") << input.message();
     log << ls;
     cspp->Deserialize(input.message());
@@ -130,7 +142,7 @@ int gcsCloudShepard_o::process(input_o& input, output_o& output)  {
     output.setMessage(out.string());
 
     (ls = "") << "gcsCloudShepard_o::carapace_o::process( socket(" << input.socket() << "), sequence(";
-    ls << cspp->Sequence() << ") ) finished.";
+    ls << cspp->sequence() << ") ) finished.";
     log << ls;
 
     return  0;
@@ -151,13 +163,19 @@ int gcsCloudShepard_o::spawnGeneticCloudServer()  {
 string_o ls;
 string_o systemString;
 
-    systemString << "./GeneticCloudServer_o " << e.uniqueid() << " >> gcs.log &";
+    systemString << "./GeneticCloudServer " << e.uniqueid() << " >> gcs.log &";
 
 log << systemString;
 
 system(systemString.string());
 
     return  2;
+}
+
+void* gcsCloudShepard_oThreadLoop(void* gcsCloudShepard_oThread)  {
+    (void)((gcsCloudShepard_o*)gcsCloudShepard_oThread)->loadThreadLoop();
+    (void)((thread_o*)gcsCloudShepard_oThread)->exit();
+    return  gcsCloudShepard_oThread;
 }
 
 

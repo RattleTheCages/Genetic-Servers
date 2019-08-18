@@ -1,6 +1,7 @@
 /**  gcsDNA_o.h  **************************************************************
+                                   Copyright 2019  Rattle  All rights reserved.
 
-            Genetic-Cloud-Servers
+            Genetic Cloud Servers
 
 
 
@@ -8,7 +9,7 @@
 
 
 
-                           Copyright 2019  Daniel Huffman  All rights reserved.
+            Server DNA genotypes expressed as server behavior phenotypes.
 
 *******************************************************************************/
 
@@ -32,10 +33,13 @@ class gcsDNA_o : public entity_o, public traits_o  {
 
     int     state() const;
 
-                                              // DNA genotypes:
+
+                      // Phenotypes expressed from Server DNA:
+
     int     numberOfWorkerThreads();          // These virtual server parameters
     int     numberOfGateThreads();            // are traits revealed in the
     int     numberOfCPUs();                   // Genetic Cloud Server DNA.
+    int     ramSize();
     int     diskSpaceSize();                
     int     bandwidthSize();                
     int     operatingSystemID();              // E.g.:
@@ -50,6 +54,7 @@ class gcsDNA_o : public entity_o, public traits_o  {
                                               // (1) Amazon Cloud aws ec2
                                               // (2) Google Cloud
                                               // (3) Azure Cloud
+    int     duration();
                                       
 
 
@@ -61,39 +66,6 @@ class gcsDNA_o : public entity_o, public traits_o  {
 inline int gcsDNA_o::state() const  {
     return  State;
 }
-
-inline int gcsDNA_o::numberOfWorkerThreads()  {
-    return  traits_o::trait(1, *(entity_o*)this);
-}
-
-inline int gcsDNA_o::numberOfGateThreads()  {
-    return  traits_o::trait(2, *this);
-}
-
-inline int gcsDNA_o::numberOfCPUs()  {
-    return  traits_o::trait(3, *this);
-}
-
-inline int gcsDNA_o::diskSpaceSize()  {
-    return  traits_o::trait(4, *this);
-}
-
-inline int gcsDNA_o::operatingSystemID()  {
-    return  traits_o::trait(5, *this);
-}
-
-inline int gcsDNA_o::operatingSystemConfig()  {
-    return  traits_o::trait(6, *this);
-}
-
-inline int gcsDNA_o::bandwidthSize()  {
-    return  traits_o::trait(7, *this);
-}
-
-inline int gcsDNA_o::cloudService()  {
-    return  traits_o::trait(8, *this);
-}
-
 
 
 #endif

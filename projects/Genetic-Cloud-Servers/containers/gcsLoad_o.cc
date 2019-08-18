@@ -1,6 +1,7 @@
-/**  gcsLoad.cc  **************************************************************
+/**  gcsLoad_o.cc  ************************************************************
+                                   Copyright 2019  Rattle  All rights reserved.
 
-            Genetic-Cloud-Servers
+            Genetic Cloud Servers
 
 
 
@@ -8,14 +9,11 @@
 
 
 
-
-                           Copyright 2019  Daniel Huffman  All rights reserved.
-
 *******************************************************************************/
 
 
 #include "parse_o.h"
-#include "gcsLoad.h"
+#include "gcsLoad_o.h"
 
 
 gcsLoad_o::gcsLoad_o()  {

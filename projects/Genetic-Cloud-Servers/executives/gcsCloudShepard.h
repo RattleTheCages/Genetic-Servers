@@ -1,14 +1,18 @@
-/**  gcsCloudShepard_o.h  *********************************************************
+/**  gcsCloudShepard.h  *******************************************************
+                                   Copyright 2019  Rattle  All rights reserved.
 
-            Cloud-Shepard
-
-
-
-            Server
+            Genetic Cloud Servers
 
 
 
-                           Copyright 2019  Daniel Huffman  All rights reserved.
+            Cloud Shepard Object
+
+
+
+            The executive controlling the fates of the Genetic Cloud Servers.
+
+
+
 
 *******************************************************************************/
 
@@ -20,17 +24,18 @@
 #include "input_o"
 #include "output_o"
 #include "queue_o"
+#include "thread_o"
 #include "sortList_o"
 #include "colony_o"
-#include "gcsShepardPacket_o.h"
+#include "gcsStatusPacket_o.h"
 
-class gcsCloudShepard_o : public pserver_o /*, public carapace_o*/  {
-//  friend class carapace_o;
+class gcsCloudShepard_o : public pserver_o  {
   protected:
     int         State;
     colony_o    flock;
-    queue_o<gcsShepardPacket_o>  queueOfGeneticCloudServers;
-    sortList_o<gcsShepardPacket_o>  sortedListOfGeneticCloudServers;
+    thread_o    loadThread;
+    queue_o<gcsStatusPacket_o>  queueOfGeneticCloudServers;
+    sortList_o<gcsStatusPacket_o>  sortedListOfGeneticCloudServers;
 
   public:
     gcsCloudShepard_o();
@@ -46,6 +51,8 @@ class gcsCloudShepard_o : public pserver_o /*, public carapace_o*/  {
 
     int     spawnGeneticCloudServer();
     int     loadDNAColony();
+
+    void    loadThreadLoop();
 };
 
 

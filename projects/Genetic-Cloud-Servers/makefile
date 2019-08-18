@@ -32,12 +32,12 @@ LINKFLAGS   = -pthread -L$(PLIB_DIR) -L$(GENETIC_DIR) -L$(PSERVER_DIR)
 
 
 
-EXECS       = GeneticCloudServer_o gcsCloudShepard_o
+EXECS       = gcsCloudShepard GeneticCloudServer
 
-GCSS_HEADERS= GeneticCloudServer_o.h gcsDNA_o.h gcsShepardPacket_o.h gcsCloudShepard_o.h \
-              gcsLoad.h
+GCSS_HEADERS= GeneticCloudServer.h gcsDNA_o.h gcsStatusPacket_o.h gcsCloudShepard.h \
+              gcsLoad_o.h gcsVMInfo_o.h MatchVMService_o.h
 
-GCSS_OBJS   = gcsDNA_o.o gcsShepardPacket_o.o gcsLoad.o
+GCSS_OBJS   = gcsDNA_o.o gcsStatusPacket_o.o gcsLoad_o.o gcsVMInfo_o.o MatchVMService_o.o
 
 
 ################################################################################
@@ -57,35 +57,43 @@ all:
 ##                                                                            ##
 ################################################################################
 
-GeneticCloudServer_o.o: ./servers/GeneticCloudServer_o.h ./servers/GeneticCloudServer_o.cc
-	$(CC) $(OBJFLAGS) -c ./servers/GeneticCloudServer_o.cc
-
 gcsDNA_o.o: ./containers/gcsDNA_o.h ./containers/gcsDNA_o.cc
 	$(CC) $(OBJFLAGS) -c ./containers/gcsDNA_o.cc
 
-gcsLoad.o: ./containers/gcsLoad.h ./containers/gcsLoad.cc
-	$(CC) $(OBJFLAGS) -c ./containers/gcsLoad.cc
+gcsLoad_o.o: ./containers/gcsLoad_o.h ./containers/gcsLoad_o.cc
+	$(CC) $(OBJFLAGS) -c ./containers/gcsLoad_o.cc
 
-gcsShepardPacket_o.o: ./containers/gcsShepardPacket_o.h ./containers/gcsShepardPacket_o.cc
-	$(CC) $(OBJFLAGS) -c ./containers/gcsShepardPacket_o.cc
+gcsVMInfo_o.o: ./containers/gcsVMInfo_o.h ./containers/gcsVMInfo_o.cc
+	$(CC) $(OBJFLAGS) -c ./containers/gcsVMInfo_o.cc
 
-gcsCloudShepard_o.o: ./executives/gcsCloudShepard_o.h ./executives/gcsCloudShepard_o.cc
-	$(CC) $(OBJFLAGS) -c ./executives/gcsCloudShepard_o.cc
+gcsStatusPacket_o.o: ./containers/gcsStatusPacket_o.h ./containers/gcsStatusPacket_o.cc
+	$(CC) $(OBJFLAGS) -c ./containers/gcsStatusPacket_o.cc
 
-GeneticCloudServer_o: GeneticCloudServer_o.o $(GCSS_OBJS)
-	$(CC) $(LINKFLAGS) -o GeneticCloudServer_o                             \
+MatchVMService_o.o: ./servers/MatchVMService_o.h ./servers/MatchVMService_o.cc
+	$(CC) $(OBJFLAGS) -c ./servers/MatchVMService_o.cc
+
+
+GeneticCloudServer.o: ./servers/GeneticCloudServer.h ./servers/GeneticCloudServer.cc
+	$(CC) $(OBJFLAGS) -c ./servers/GeneticCloudServer.cc
+
+GeneticCloudServer: GeneticCloudServer.o $(GCSS_OBJS)
+	$(CC) $(LINKFLAGS) -o GeneticCloudServer                             \
         $(GCSS_OBJS)                                                           \
         -Wl,--start-group \
         -lpserver_o    \
         -lplib_o                  \
         -lgenetic_o    \
-        GeneticCloudServer_o.o                                                 \
+        GeneticCloudServer.o                                                 \
         -Wl,--end-group \
 
-gcsCloudShepard_o: gcsCloudShepard_o.o $(GCSS_OBJS)
-	$(CC) $(LINKFLAGS) -o gcsCloudShepard_o               \
+
+gcsCloudShepard.o: ./executives/gcsCloudShepard.h ./executives/gcsCloudShepard.cc
+	$(CC) $(OBJFLAGS) -c ./executives/gcsCloudShepard.cc
+
+gcsCloudShepard: gcsCloudShepard.o $(GCSS_OBJS)
+	$(CC) $(LINKFLAGS) -o gcsCloudShepard               \
         $(GCSS_OBJS)                                                           \
-        gcsCloudShepard_o.o                                                 \
+        gcsCloudShepard.o                                                 \
         -lgenetic_o    \
         -lpserver_o    \
         -lplib_o                  \
@@ -96,7 +104,7 @@ gcsCloudShepard_o: gcsCloudShepard_o.o $(GCSS_OBJS)
 ## Clean.                                                                     ##
 ################################################################################
 clean:
-	rm -f *.o $(EXECS)
+	rm -f *.o *.log $(EXECS)
 
 
 ################################################################################

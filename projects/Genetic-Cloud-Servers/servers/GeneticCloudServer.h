@@ -1,14 +1,13 @@
-/**  GeneticCloudServer_o.h  ***************************************************
+/**  GeneticCloudServer_o.h  **************************************************
+                                   Copyright 2019  Rattle  All rights reserved.
 
-            Genetic-Cloud-Servers
-
-
-
-            Server
+            Genetic Cloud Servers
 
 
 
-                           Copyright 2019  Daniel Huffman  All rights reserved.
+            Genetic Cloud Server Object
+
+
 
 *******************************************************************************/
 
@@ -16,13 +15,19 @@
 #define GeneticCloudServer_API
 
 #include "pserver_o"
+#include "time_o"
 #include "entity_o"      // Server DNA!
 #include "gcsDNA_o.h"
+#include "gcsVMInfo_o.h"
 
 class GeneticCloudServer_o : public gcsDNA_o, public pserver_o  {
   protected:
     int         State;
-    //string_o    Name;
+    time_o      Time;
+    gcsVMInfo_o vminfo;
+
+    int         StartTime;
+    int         Duration;
 
   public:
     GeneticCloudServer_o();
@@ -35,9 +40,10 @@ class GeneticCloudServer_o : public gcsDNA_o, public pserver_o  {
 
     int     start();
 
+    int     loop();
+
     const char* name() const;
 
-int loadDNAColony();
 };
 
 
