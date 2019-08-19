@@ -67,7 +67,7 @@ class gcsStatusPacket_o  {
 
     void            operator >> (string_o&) const;      // OLP representation.
     void            Serialize(string_o&) const;
-    gcsStatusPacket_o& operator << (const string_o&);   // Reconstruct.
+    gcsStatusPacket_o& operator << (string_o&);         // Reconstruct.
     void            Deserialize(const string_o&);
 
     int              operator < (gcsStatusPacket_o&);

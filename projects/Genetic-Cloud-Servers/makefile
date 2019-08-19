@@ -1,9 +1,11 @@
 ################################################################################
 ################################################################################
+##                               Copyright 2019  Rattle  All rights reserved. ##
 ##                                                                            ##
-##    Genetic-Cloud-Servers                                                   ##
+##    Genetic Cloud Servers                                                   ##
 ##                                                                            ##
-##    A satirical internet protocol attempting to stymie packet sniffers.     ##
+##                                                                            ##
+##                                                                            ##
 ##                                                                            ##
 ##                                                                            ##
 ##                                                                            ##
@@ -11,8 +13,6 @@
 ##    makefile.  If any changes are made to header files, please `make clean' ##
 ##    before executing `make all'.                                            ##
 ##                                                                            ##
-##                                                                            ##
-##                       Copyright 2019  Daniel Huffman  All rights reserved. ##
 ##                                                                            ##
 ################################################################################
 ################################################################################
@@ -32,12 +32,12 @@ LINKFLAGS   = -pthread -L$(PLIB_DIR) -L$(GENETIC_DIR) -L$(PSERVER_DIR)
 
 
 
-EXECS       = gcsCloudShepard GeneticCloudServer
+EXECS       = gcsCloudShepard gcsGeneticCloudServer gcsLoadSimulator
 
-GCSS_HEADERS= GeneticCloudServer.h gcsDNA_o.h gcsStatusPacket_o.h gcsCloudShepard.h \
-              gcsLoad_o.h gcsVMInfo_o.h MatchVMService_o.h
+GCSS_HEADERS= gcsGeneticCloudServer.h gcsDNA_o.h gcsStatusPacket_o.h gcsCloudShepard.h \
+              gcsLoad_o.h gcsVMInfo_o.h gcsExpressServerDNA_o.h gcsLoadSimulator.h
 
-GCSS_OBJS   = gcsDNA_o.o gcsStatusPacket_o.o gcsLoad_o.o gcsVMInfo_o.o MatchVMService_o.o
+GCSS_OBJS   = gcsDNA_o.o gcsStatusPacket_o.o gcsLoad_o.o gcsVMInfo_o.o gcsExpressServerDNA_o.o
 
 
 ################################################################################
@@ -45,8 +45,8 @@ GCSS_OBJS   = gcsDNA_o.o gcsStatusPacket_o.o gcsLoad_o.o gcsVMInfo_o.o MatchVMSe
 ################################################################################
 
 all:
-	@echo "Genetic-Cloud-Servers  v0.200     07.31.2019"
-	@echo "Copyright 2019  Daniel Huffman  All rights reserved."
+	@echo "Genetic Cloud Servers  v0.200     08.08.2019"
+	@echo "Copyright 2019  Rattle  All rights reserved."
 	@echo `date`
 	make $(GCSS_OBJS)
 	make $(EXECS)
@@ -69,21 +69,24 @@ gcsVMInfo_o.o: ./containers/gcsVMInfo_o.h ./containers/gcsVMInfo_o.cc
 gcsStatusPacket_o.o: ./containers/gcsStatusPacket_o.h ./containers/gcsStatusPacket_o.cc
 	$(CC) $(OBJFLAGS) -c ./containers/gcsStatusPacket_o.cc
 
-MatchVMService_o.o: ./servers/MatchVMService_o.h ./servers/MatchVMService_o.cc
+gcsMatchVMService_o.o: ./servers/gcsMatchVMService_o.h ./servers/gcsMatchVMService_o.cc
 	$(CC) $(OBJFLAGS) -c ./servers/MatchVMService_o.cc
 
+gcsExpressServerDNA_o.o: ./servers/gcsExpressServerDNA_o.h ./servers/gcsExpressServerDNA_o.cc
+	$(CC) $(OBJFLAGS) -c ./servers/gcsExpressServerDNA_o.cc
 
-GeneticCloudServer.o: ./servers/GeneticCloudServer.h ./servers/GeneticCloudServer.cc
-	$(CC) $(OBJFLAGS) -c ./servers/GeneticCloudServer.cc
 
-GeneticCloudServer: GeneticCloudServer.o $(GCSS_OBJS)
-	$(CC) $(LINKFLAGS) -o GeneticCloudServer                             \
+gcsGeneticCloudServer.o: ./servers/gcsGeneticCloudServer.h ./servers/gcsGeneticCloudServer.cc
+	$(CC) $(OBJFLAGS) -c ./servers/gcsGeneticCloudServer.cc
+
+gcsGeneticCloudServer: gcsGeneticCloudServer.o $(GCSS_OBJS)
+	$(CC) $(LINKFLAGS) -o gcsGeneticCloudServer                             \
         $(GCSS_OBJS)                                                           \
         -Wl,--start-group \
         -lpserver_o    \
         -lplib_o                  \
         -lgenetic_o    \
-        GeneticCloudServer.o                                                 \
+        gcsGeneticCloudServer.o                                                 \
         -Wl,--end-group \
 
 
@@ -95,6 +98,18 @@ gcsCloudShepard: gcsCloudShepard.o $(GCSS_OBJS)
         $(GCSS_OBJS)                                                           \
         gcsCloudShepard.o                                                 \
         -lgenetic_o    \
+        -lpserver_o    \
+        -lplib_o                  \
+
+gcsLoadSimulator.o: ./tests/gcsLoadSimulator.h ./tests/gcsLoadSimulator.cc
+	$(CC) $(OBJFLAGS) -c ./tests/gcsLoadSimulator.cc
+
+gcsLoadSimulator: gcsLoadSimulator.o $(GCSS_OBJS)
+	$(CC) $(LINKFLAGS) -o gcsLoadSimulator               \
+        gcsStatusPacket_o.o    \
+        gcsLoad_o.o    \
+        gcsVMInfo_o.o   \
+        gcsLoadSimulator.o                                                 \
         -lpserver_o    \
         -lplib_o                  \
 

@@ -87,6 +87,7 @@ void gcsVMInfo_o::Serialize(string_o& sout) const  {
     sout << '\n' << GCSVMInfo_Duration << '=' << Duration;
     sout << '\n' << GCSVMInfo_OSShortName << '=' << OSShortName;
     sout << '\n' << GCSVMInfo_OSLongName << '=' << OSLongName;
+    sout << '\n';
 
 }
 

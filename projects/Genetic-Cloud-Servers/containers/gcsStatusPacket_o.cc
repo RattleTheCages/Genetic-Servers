@@ -50,6 +50,7 @@ void gcsStatusPacket_o::Serialize(string_o& sout) const  {
     sout << '\n' << GCSStatusPacket_COMMAND << '=' << Command;
     sout << '\n' << GCSStatusPacket_STARTTIME << '=' << StartTime;
     sout << '\n' << GCSStatusPacket_DURATION << '=' << Duration;
+    sout << '\n';
 
 }
 
@@ -71,8 +72,9 @@ void gcsStatusPacket_o::operator >> (string_o& s) const  {
     Serialize(s);
 }
 
-gcsStatusPacket_o& gcsStatusPacket_o::operator << (const string_o& s)  {
+gcsStatusPacket_o& gcsStatusPacket_o::operator << (string_o& s)  {
     Deserialize(s);
+    s.upcut("\n\n");
     return  *this;
 }
 

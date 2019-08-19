@@ -1,15 +1,17 @@
-/**  MatchVMService_o.cc  *****************************************************
+/**  gcsExpressServerDNA_o.cc  ************************************************
                                    Copyright 2019  Rattle  All rights reserved.
+
 
             Genetic Cloud Servers
 
 
 
-            Match VM Service
+            Express Genetic Cloud Server DNA.
 
 
 
-            Match server DNA to a virtual machine profile.
+
+            Express the DNA genotypes into their Genetic Cloud Server phenotypes.
 
 *******************************************************************************/
 
@@ -17,11 +19,11 @@
 #include "file_o"
 #include "gcsDNA_o.h"
 #include "gcsVMInfo_o.h"
-#include "MatchVMService_o.h"
+#include "gcsExpressServerDNA_o.h"
 
 extern log_o log;
 
-MatchVMService_o::MatchVMService_o() : State(2)  {
+gcsExpressServerDNA_o::gcsExpressServerDNA_o() : State(2)  {
     file_o ff;
     string_o ffs;
     gcsVMInfo_o* vminfo;
@@ -35,9 +37,9 @@ MatchVMService_o::MatchVMService_o() : State(2)  {
     }
 }
 
-MatchVMService_o::~MatchVMService_o()  {}
+gcsExpressServerDNA_o::~gcsExpressServerDNA_o()  {}
 
-void MatchVMService_o::dumpVMList(string_o& s)  {
+void gcsExpressServerDNA_o::dumpVMList(string_o& s)  {
     gcsVMInfo_o* vminfo;
     vminfo = VMInfoList.first();
     while(vminfo)  {
@@ -47,7 +49,7 @@ void MatchVMService_o::dumpVMList(string_o& s)  {
     }
 }
 
-void MatchVMService_o::match(gcsDNA_o& dna, gcsVMInfo_o& info)  {
+void gcsExpressServerDNA_o::expressGenes(gcsDNA_o& dna, gcsVMInfo_o& info)  {
     string_o            ls;
     string_o            cloudNameTry;
     int                 cloudId;
@@ -188,10 +190,10 @@ cloudId = 0;
     }
     log << ":VM matched list\n";
 
-    ls = "MatchVMService_o::match() ";
+    ls = "gcsExpressServerDNA_o::match() ";
     vminfo = vmList.first();
     if(vmList.cardinality() > 1)  {
-        ls << "MatchVMService_o::match() ";
+        ls << "gcsExpressServerDNA_o::match() ";
         ls << "DNA matched multiple VMInfo records.  Taking first VMInfo record on VMInfo list: ";
         ls << vminfo->index();
     }

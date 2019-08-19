@@ -17,15 +17,15 @@
 
 
 gcsLoad_o::gcsLoad_o()  {
-    name = GCSLOAD_OBJECT;
-    type = 0;
-    load = 0;
+    Name = GCSLOAD_OBJECT;
+    Type = 0;
+    Load = 0;
 }
 
 gcsLoad_o::gcsLoad_o(const gcsLoad_o& lg)  {
-    name = lg.name;
-    type = lg.type;
-    load = lg.load;
+    Name = lg.Name;
+    Type = lg.Type;
+    Load = lg.Load;
 }
 
 gcsLoad_o::~gcsLoad_o()  {}
@@ -34,26 +34,28 @@ gcsLoad_o::~gcsLoad_o()  {}
 void gcsLoad_o::Serialize(string_o& sout) const  {
 
     sout << '\n' << GCSLOAD_OBJECT << ':';
-    sout << '\n' << GCSLOAD_NAME << '=' << name;
-    sout << '\n' << GCSLOAD_TYPE << '=' << type;
-    sout << '\n' << GCSLOAD_LOAD << '=' << load;
+    sout << '\n' << GCSLOAD_NAME << '=' << Name;
+    sout << '\n' << GCSLOAD_TYPE << '=' << Type;
+    sout << '\n' << GCSLOAD_LOAD << '=' << Load;
+    sout << '\n';
 
 }
 
 void gcsLoad_o::Deserialize(const string_o& sin)  {
     parse_o parse(sin.string());
 
-    parse.it(GCSLOAD_NAME, name);
-    parse.it(GCSLOAD_TYPE, type);
-    parse.it(GCSLOAD_LOAD, load);
+    parse.it(GCSLOAD_NAME, Name);
+    parse.it(GCSLOAD_TYPE, Type);
+    parse.it(GCSLOAD_LOAD, Load);
 }
 
 void gcsLoad_o::operator >> (string_o& s) const  {
     Serialize(s);
 }
 
-gcsLoad_o& gcsLoad_o::operator << (const string_o& s)  {
+gcsLoad_o& gcsLoad_o::operator << (string_o& s)  {
     Deserialize(s);
+    s.upcut("\n\n");
     return  *this;
 }
 

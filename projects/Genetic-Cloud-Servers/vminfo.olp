@@ -1,3 +1,4 @@
+
 gcsVMInfo_o:
 Index=1
 CloudProvider=chicagovps.net
@@ -246,7 +247,7 @@ Type=Dedicated
 CPUName=
 CPUGHz=220
 CPUCores=8
-RAMMemory=32676
+RAMMemory=32767
 SDDMemory=400
 Bandwidth=10000
 Price=10000
@@ -278,7 +279,7 @@ Type=Bare Metal
 CPUName=Xeon
 CPUGHz=340
 CPUCores=4
-RAMMemory=16383
+RAMMemory=16384
 SDDMemory=2000
 Bandwidth=10000
 Price=8500

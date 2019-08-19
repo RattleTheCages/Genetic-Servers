@@ -11,9 +11,6 @@
 
             The executive controlling the fates of the Genetic Cloud Servers.
 
-
-
-
 *******************************************************************************/
 
 #ifndef gcsCloudShepard_API
@@ -49,10 +46,15 @@ class gcsCloudShepard_o : public pserver_o  {
     int     start();
     int     process(input_o&, output_o&);
 
+    int     processedLoad();
+
     int     spawnGeneticCloudServer();
     int     loadDNAColony();
 
     void    loadThreadLoop();
+
+    int     processStatusPacket(input_o&, output_o&);
+    int     processLoadPacket(input_o&, output_o&);
 };
 
 

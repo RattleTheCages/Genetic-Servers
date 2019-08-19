@@ -25,9 +25,9 @@
 
 class gcsLoad_o  {
   protected:
-    string_o            name;
-    int                 type;
-    int                 load;
+    string_o            Name;
+    int                 Type;
+    int                 Load;
 
   public:
     gcsLoad_o();
@@ -35,9 +35,9 @@ class gcsLoad_o  {
     virtual ~gcsLoad_o();
     gcsLoad_o&   operator = (const gcsLoad_o&);
 
-    const char*     Name() const;
-    int             Load() const;
-    int             Type() const;
+    const char*     name() const;
+    int             load() const;
+    int             type() const;
 
     void            setName(const string_o&);
     void            setType(const int);
@@ -46,7 +46,7 @@ class gcsLoad_o  {
 
     void            operator >> (string_o&) const;      // OLP representation.
     void            Serialize(string_o&) const;
-    gcsLoad_o&      operator << (const string_o&);      // Reconstruct.
+    gcsLoad_o&      operator << (string_o&);            // Reconstruct.
     void            Deserialize(const string_o&);
 
 
@@ -56,28 +56,28 @@ class gcsLoad_o  {
 /******************************************************************************/
 
 
-inline const char* gcsLoad_o::Name() const  {
-    return  name.string();
+inline const char* gcsLoad_o::name() const  {
+    return  Name.string();
 }
 
-inline int gcsLoad_o::Type() const  {
-    return  type;
+inline int gcsLoad_o::type() const  {
+    return  Type;
 }
 
-inline int gcsLoad_o::Load() const  {
-    return  load;
+inline int gcsLoad_o::load() const  {
+    return  Load;
 }
 
 inline void gcsLoad_o::setLoad(const int l)  {
-    load = l;
+    Load = l;
 }
 
 inline void gcsLoad_o::setType(const int t)  {
-    type = t;
+    Type = t;
 }
 
 inline void gcsLoad_o::setName(const string_o& n)  {
-    name = n;
+    Name = n;
 }
 
 

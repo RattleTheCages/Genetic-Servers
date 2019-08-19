@@ -17,10 +17,10 @@
 #include "thread_o"
 #include "colony_o"
 #include "time_o"
-#include "GeneticCloudServer.h"
+#include "gcsGeneticCloudServer.h"
 #include "gcsStatusPacket_o.h"
 #include "gcsVMInfo_o.h"
-#include "MatchVMService_o.h"
+#include "gcsExpressServerDNA_o.h"
 
 
 log_o       log;
@@ -53,7 +53,7 @@ int GeneticCloudServer_o::loop()  {
         client.connect("localhost", 8228);
 
         csp.setIP("localhost");
-        csp.setLoad(rndm.i(100));
+        csp.setLoad(rndm.i(100) + 22);
         csp.setStartTime(StartTime);
         csp.setName(nname);
         csp.setDuration(duration());
@@ -72,7 +72,7 @@ log << ss;
         log << ls;
 
 
-        thread_o::usleep(2000000);
+        thread_o::usleep(2000020 + rndm.i(2002));
 
         Time.adjust();
 (ls="")<<StartTime<<" "<<duration()<<" "<<Time.seconds();
@@ -102,14 +102,14 @@ int GeneticCloudServer_o::start()  {
     ls << "duration " << duration() << '\n';
     log << ls;
 
-MatchVMService_o mvms;
+gcsExpressServerDNA_o mvms;
 ls="";
 //mvms.dumpVMList(ls);
 //log << ls;
-mvms.match(*this, vminfo);
+mvms.expressGenes(*this, vminfo);
 
 
-return 2;
+//return 2;
 
 
 //    r = gcs.serveport(8228);
